@@ -22,7 +22,6 @@ app.get("/", function (req, res) {
       res.sendFile(path.join(__dirname, "public", "notes.html"));
     });
   
-
 // API Routes/lines 28-34 index.js
 app.get("/api/notes", function (req,res){
     fs.readFile("./db/db.json", "utf8", function(err,data) {
@@ -53,16 +52,27 @@ app.post("/api/notes", function (req,res){
             if(err) throw err
             res.json("/api/notes");
          }); 
-    });  
+    });
+
     });
 // lines 45-51 index.js
 app.delete("/api/notes/:id", function (req, res){
     fs.readFile("./db/db.json", "utf-8", function (err,data){
-        res.json(JSON.parse(data));
-    })
-    // delete a note based off id
-    const {id} = req.params;
-})
+        if(err) throw err
+        const {id} = req.params;
+         // delete a note based off id
+        let newArray = JSON.parse(data).filter((note)=>{
+            if (note.id === id) return false;
+            return true;
+         }) 
+        fs.writeFile("./db/db.json", JSON.stringify(newArray), function (err){
+            if(err) throw err
+            res.json(newArray);
+        })
+    });
+   
+    
+});
 
 app.listen(PORT, () => console.log("App listening on PORT " + PORT));
 
