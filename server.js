@@ -31,29 +31,32 @@ app.get("/api/notes", function (req,res){
  }); 
 //  lines 36-43 index.js
 app.post("/api/notes", function (req,res){
-    fs.readFile("./db/db.json", "utf-8", function (err,data){
+    fs.readFile("./db/db.json", "utf-8", function (err){
         if(err) throw err
+        // read the data from db.json
+        // creates a post from req.body 
+           const data = req.body
         const note = {
                 id: uuidv4(),
                 title: req.body.title,
                 text: req.body.text
              };
+             console.log("note: ", note)
+            
+            
+    // parse out to stringify the array
         fs.writeFile("./db/db.json", JSON.stringify(note), function (err){
             if(err) throw err
-            res.end()
-        })
-    })
-    // creates a note from req.body 
-    // const note = req.body
-    // 
-    // fs.promises.readFile("./db/db.json", "utf8", function(err,data) {
-    //     res.json(JSON.parse(data));
-    // });
-    // read the data from db.json
-    // parse out to the Arraystringify the array
+            res.sendFile(path.join(__dirname, "public", "notes.html"));
+            
+         }); 
+    });  
+    
+    
+    
+    
 
-    // write to file with the new array
-    // respond to the user
+  
     
 });
 // lines 45-51 index.js
@@ -69,6 +72,4 @@ app.delete("/api/notes/:id", function (req, res){
 app.listen(PORT, () => console.log("App listening on PORT " + PORT));
 
 
-// const jsonData = JSON.parse(data);
-// const newNote = {id:db.length+1, title:req.body.title, text:req.body.text};
-// jsonData.push(newNote);
+
