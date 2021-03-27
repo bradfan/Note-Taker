@@ -45,7 +45,7 @@ app.post("/api/notes", function (req,res){
        console.log("dataREadString", dataRead)
        // convert json string - parse
        dataRead = JSON.parse(dataRead)
-       console.log("dataREadParsed", dataRead)
+       console.log("dataReadParsed", dataRead)
         dataRead.push(note);
         // stringify the array
         fs.writeFile("./db/db.json", JSON.stringify(dataRead), function (err){
